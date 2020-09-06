@@ -7,7 +7,7 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 
 # give credits
-__author__ = "???"
+__author__ = "Gabby"
 
 import re
 import os
@@ -15,22 +15,51 @@ import sys
 import shutil
 import subprocess
 import argparse
+import zipfile
 
 
 def get_special_paths(dirname):
     """Given a dirname, returns a list of all its special files."""
-    # your code here
-    return
+    # abs_path = []
+    # for file in dirname:
+    #     os.walk(dirname)
+    #     file_path = os.getcwd(file)
+    #     if '__' in file_path:
+    #         abs_path.append(os.path.abspath(file_path))
+
+    result = []
+    for root, dirs, files in os.walk(os.path.abspath(dirname)):
+        for name in files:
+            if re.findall(r'__(\w+)__', name):
+                result.append(os.path.join(root, name))
+        break
+    return result
+    # paths = os.listdir(path)
+    # print(paths)
+    # for filename in dirname:
+    #     if not paths:
+    #         path_.append(filename)
+    # print(path_)
+    # for file in path_:
+    #     abs_path.append(os.path.abspath(file))
+    # print(abs_path)
+    # return abs_path
 
 
 def copy_to(path_list, dest_dir):
-    # your code here
-    return
+    if not os.path.isdir(dest_dir):
+        os.makedirs(dest_dir)
+    for path in path_list:
+        shutil.copy(path, dest_dir)
+
+    
 
 
 def zip_to(path_list, dest_zip):
-    # your code here
-    return
+    compressed = list()
+    for path in path_list:
+        # compressed.append(zip(path, dest_zip))
+    # subprocess.call('zip', len(path_list),  compressed, dest_zip)
 
 
 def main(args):
@@ -41,7 +70,9 @@ def main(args):
     parser.add_argument('--tozip', help='dest zipfile for special files')
     # TODO: add one more argument definition to parse the 'from_dir' argument
     ns = parser.parse_args(args)
-
+    if not ns:
+        parser.print_usage()
+        sys.exit(1)
     # TODO: you must write your own code to get the command line args.
     # Read the docs and examples for the argparse module about how to do this.
 
