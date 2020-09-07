@@ -19,7 +19,7 @@ import argparse
 
 def get_special_paths(dirname):
     """Given a dirname, returns a list of all its special files."""
-    result = []
+    result = list()
     for f in os.listdir(dirname):
         if re.search(r'__(\w+)__', f):
             result.append(os.path.abspath(os.path.join(dirname, f)))
@@ -36,9 +36,7 @@ def copy_to(path_list, dest_dir):
 
 def zip_to(path_list, dest_zip):
     ''' zip from one file to another'''
-    command_list = ['zip', '-j', dest_zip]
-    command_list.extend(path_list)
-    subprocess.run(command_list)
+    subprocess.run(['zip', '-j', dest_zip] + path_list)
 
 
 def main(args):
@@ -60,9 +58,9 @@ def main(args):
 
     # Your code here: Invoke (call) your functions
     special_list = get_special_paths(ns.fromdir)
-    if ns.todir is not None:
+    if ns.todir:
         copy_to(special_list, ns.todir)
-    if ns.tozip is not None:
+    if ns.tozip:
         zip_to(special_list, ns.tozip)
     print('\n'.join(special_list))
 
