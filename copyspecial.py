@@ -20,17 +20,15 @@ import argparse
 def get_special_paths(dirname):
     """Given a dirname, returns a list of all its special files."""
     result = []
-    for root, dirs, files in os.walk(os.path.abspath(dirname)):
-        for name in files:
-            if re.findall(r'__(\w+)__', name):
-                result.append(os.path.join(root, name))
-        break
+    for f in os.listdir(dirname):
+        if re.search(r'__(\w+)__', f):
+            result.append(os.path.abspath(os.path.join(dirname, f)))
     return result
 
 
 def copy_to(path_list, dest_dir):
     ''' copy file to folder if it the folder does not exist create a file'''
-    if not os.path.isdir(dest_dir):
+    if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
     for path in path_list:
         shutil.copy(path, dest_dir)
@@ -64,10 +62,9 @@ def main(args):
     special_list = get_special_paths(ns.fromdir)
     if ns.todir is not None:
         copy_to(special_list, ns.todir)
-    elif ns.tozip is not None:
+    if ns.tozip is not None:
         zip_to(special_list, ns.tozip)
-    else:
-        print('\n'.join(special_list))
+    print('\n'.join(special_list))
 
 
 if __name__ == "__main__":
