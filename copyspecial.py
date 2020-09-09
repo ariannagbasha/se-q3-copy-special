@@ -60,9 +60,10 @@ def main(args):
     special_list = get_special_paths(ns.fromdir)
     if ns.todir:
         copy_to(special_list, ns.todir)
-    if ns.tozip:
+    elif ns.tozip:
         zip_to(special_list, ns.tozip)
-    print('\n'.join(special_list))
+    else:
+        print('\n'.join(special_list))
 
 
 if __name__ == "__main__":
