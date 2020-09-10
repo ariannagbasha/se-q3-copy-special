@@ -67,8 +67,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print('usage: python copyspecial.py file-to-copy')
-    else:
-        main(sys.argv[1:])
-    print('\n\nCompleted.')
+    main(sys.argv[1:])
